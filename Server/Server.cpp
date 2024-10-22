@@ -324,7 +324,6 @@ private:
 
             iResult = send(*(INFO->ClientSocket), chBuf, BUFSIZE, 0);
             if (iResult == SOCKET_ERROR) {
-                printf("send failed with error: %d\n", WSAGetLastError());
                 return 1;
             }
 
@@ -336,7 +335,7 @@ private:
 public:
 
     Server() {
-        ip_address = "localhost";
+        ip_address = "192.168.0.43";
     }
 
     Server(string ip_address) {
@@ -364,7 +363,7 @@ public:
         hints.ai_flags = AI_PASSIVE;
 
         // Resolve the server address and port
-        iResult = getaddrinfo(ip_address.c_str(), DEFAULT_PORT, &hints, &result);
+        iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
         if (iResult != 0) {
             printf("getaddrinfo failed with error: %d\n", iResult);
             WSACleanup();
@@ -432,7 +431,6 @@ struct addrinfo Server::hints;
 
 int main()
 {
-
 
     Server server;
     server.Connected();

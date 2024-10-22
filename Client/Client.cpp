@@ -35,13 +35,13 @@ private:
     int iResult;
     int recvbuflen = BUFSIZE;
 
-
+    static string ip_address;
 
     static DWORD WINAPI RECV_MESS_FROM_SERV() {
 
         char recvbuf[BUFSIZE];
         int iResult;
-
+        
 
         for (;;) {
         
@@ -55,7 +55,7 @@ private:
 
             }
             else {
-                cout << recvbuf << " " << iResult << endl;
+                //cout << recvbuf << " " << iResult << endl;
                 return 1;
             }
         
@@ -97,6 +97,13 @@ private:
 
 public:
 
+    Client() {
+        ip_address = "localhost";
+    }   
+
+    Client(string ip_address) {
+        this->ip_address = ip_address;
+    }
     int Connected() {
 
         ConnectSocket = INVALID_SOCKET;
@@ -116,7 +123,7 @@ public:
         hints.ai_protocol = IPPROTO_TCP;
 
         // Resolve the server address and port
-        iResult = getaddrinfo("localhost", DEFAULT_PORT, &hints, &result);
+        iResult = getaddrinfo(ip_address.c_str(), DEFAULT_PORT, &hints, &result);
         if (iResult != 0) {
             printf("getaddrinfo failed with error: %d\n", iResult);
             WSACleanup();
@@ -184,14 +191,25 @@ public:
 
 };
 
+string Client::ip_address;
 SOCKET Client::ConnectSocket;
 
 
 
-int __cdecl main()
+int __cdecl main(int argc, char** argv)
 {
 
-    Client client;
-    client.Connected();
+
+    if (argc == 2) {
+        Client client = Client(string(argv[1]));
+        client.Connected();
+        cout << argv[1] << endl;
+    }
+    else {
+        Client client;
+        client.Connected();
+    }
+
+    
    
 }
