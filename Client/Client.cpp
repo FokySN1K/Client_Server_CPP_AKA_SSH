@@ -44,7 +44,7 @@ private:
         
 
         for (;;) {
-        
+            
             ZeroMemory(recvbuf, BUFSIZE);
 
             iResult = recv(ConnectSocket, recvbuf, BUFSIZE, 0);
@@ -174,6 +174,8 @@ public:
 
         WaitForMultipleObjects(2, hThreads, FALSE, INFINITE);
 
+        CloseHandle(hThreads[0]);
+        CloseHandle(hThreads[1]);
 
 
 
@@ -200,16 +202,9 @@ int __cdecl main(int argc, char** argv)
 {
 
 
-    if (argc == 2) {
-        Client client = Client(string(argv[1]));
-        client.Connected();
-        cout << argv[1] << endl;
-    }
-    else {
-        Client client;
-        client.Connected();
-    }
-
+    
+    Client client;
+    client.Connected();
     
    
 }
