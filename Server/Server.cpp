@@ -151,8 +151,8 @@ private:
 
         hThreads[0] = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)WriteToPipe, (LPVOID)INFO, NULL, NULL);
         hThreads[1] = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ReadFromPipe, (LPVOID)INFO, NULL, NULL);
-
-
+        CloseHandle(hThreads[0]);
+        CloseHandle(hThreads[1]);
 
         WaitForMultipleObjects(2, hThreads, FALSE, INFINITE);
 
