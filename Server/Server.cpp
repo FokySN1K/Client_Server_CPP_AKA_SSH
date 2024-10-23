@@ -33,7 +33,6 @@ private:
 
     static WSADATA wsaData;
     static SOCKET ListenSocket;
-    static string ip_address;
     static struct addrinfo* result;
     static struct addrinfo hints;
 
@@ -332,18 +331,20 @@ private:
         return 1;
     }
     // для множественного обслуживания
-
-public:
-
     Server() {
-        ip_address = "192.168.0.43";
-    }
-
-    Server(string ip_address) {
-        this->ip_address = ip_address;
         ListenSocket = INVALID_SOCKET;
         result = NULL;
     }
+
+public:
+
+    static std::shared_ptr<Server> instance()
+    {
+        static std::shared_ptr<Server> s{ new Server };
+        return s;
+    }
+    Server(Server const&) = delete;
+    Server& operator= (Server const&) = delete;
 
     int Connected() {
 
@@ -420,7 +421,6 @@ public:
 };
 WSADATA Server::wsaData;
 SOCKET Server::ListenSocket;
-string Server::ip_address;
 struct addrinfo* Server::result;
 struct addrinfo Server::hints;
 
@@ -433,7 +433,8 @@ struct addrinfo Server::hints;
 int main()
 {
 
-    Server server;
-    server.Connected();
+    shared_ptr<Server> server = Server::instance();
+    server->Connected();
+
 
 }
