@@ -202,9 +202,19 @@ int __cdecl main(int argc, char** argv)
 {
 
 
-    
-    Client client;
-    client.Connected();
+    if (argc == 1) {
+        Client client;
+        client.Connected();
+    }
+    else if (argc == 2) {
+        string ip = argv[1];
+        Client client{ip};
+        client.Connected();
+    }
+    else {
+        cout << "Fail programm";
+    }
+
     
    
 }
